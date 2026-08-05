@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es"> 
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -195,7 +195,7 @@
         .checkout-btn {
             display: block;
             width: 100%;
-            background-color: var(--dark-color);
+            background-color: #25d366; /* Color verde característico de WhatsApp */
             color: white;
             border: none;
             padding: 0.8rem;
@@ -208,7 +208,7 @@
         }
 
         .checkout-btn:hover {
-            background-color: #000;
+            background-color: #20ba5a;
         }
     </style>
 </head>
@@ -285,7 +285,7 @@
                 <span>Total:</span>
                 <span id="cart-total-price">Gs. 0</span>
             </div>
-            <button class="checkout-btn" onclick="finalizarCompra()">Proceder al Pago</button>
+            <button class="checkout-btn" onclick="enviarPedidoWhatsApp()">📲 Enviar Pedido por WhatsApp</button>
         </div>
     </div>
 
@@ -301,7 +301,6 @@
                 return;
             }
 
-            // Verificar si el producto ya está en el carrito
             const index = carrito.findIndex(item => item.nombre === nombre);
             if (index !== -1) {
                 carrito[index].cantidad += cantidad;
@@ -310,7 +309,7 @@
             }
 
             actualizarCarrito();
-            cantidadInput.value = 1; // Resetear input
+            cantidadInput.value = 1;
         }
 
         function eliminarDelCarrito(index) {
@@ -350,14 +349,32 @@
             totalPrecioEl.textContent = `Gs. ${total.toLocaleString()}`;
         }
 
-        function finalizarCompra() {
+        function enviarPedidoWhatsApp() {
             if (carrito.length === 0) {
-                alert("La canasta está vacía.");
+                alert("La canasta está vacía. Selecciona al menos un producto.");
                 return;
             }
-            alert("¡Gracias por tu compra! Redirigiendo al checkout...");
-            carrito = [];
-            actualizarCarrito();
+
+            // Construir el texto del mensaje
+            let mensaje = "¡Hola! Quiero hacer el siguiente pedido:\n\n";
+            let total = 0;
+
+            carrito.forEach(item => {
+                let subtotal = item.precio * item.cantidad;
+                total += subtotal;
+                mensaje += `▪️ ${item.cantidad}x ${item.nombre} - Gs. ${subtotal.toLocaleString()}\n`;
+            });
+
+            mensaje += `\n*Total a pagar: Gs. ${total.toLocaleString()}*`;
+
+            // Codificar el texto para URL
+            let mensajeCodificado = encodeURIComponent(mensaje);
+
+            // URL base de WhatsApp provista
+            let urlWhatsApp = `https://wa.me/message/A7XDGJNFBM4DL1?text=${mensajeCodificado}`;
+
+            // Abrir enlace en una pestaña nueva o en el WebViewer
+            window.open(urlWhatsApp, '_blank');
         }
     </script>
 </body>
