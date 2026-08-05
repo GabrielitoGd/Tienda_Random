@@ -412,9 +412,13 @@
             let mensajeCodificado = encodeURIComponent(mensaje);
 
             // Reemplaza los ceros o actualiza con tu número real si usas la API directa, o usa tu enlace:
-            let urlWhatsApp = `https://wa.me/595981234567?text=${mensajeCodificado}`;
+            let urlWhatsApp = `https://wa.me/595984312950?text=${mensajeCodificado}`;
 
-            window.open(urlWhatsApp, '_blank');
+            if (window.AppInventor && window.AppInventor.setWebViewString) {
+                window.AppInventor.setWebViewString(urlWhatsApp);
+            } else {
+                window.open(urlWhatsApp, '_blank');
+            }
         }
     </script>
 </body>
