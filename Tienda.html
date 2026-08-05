@@ -371,7 +371,7 @@
             let mensajeCodificado = encodeURIComponent(mensaje);
 
             // URL base de WhatsApp provista
-            let urlWhatsApp = `https://wa.me/595984312950?text=${mensajeCodificado}`;
+            let urlWhatsApp = `https://api.whatsapp.com/send?phone=595984312950&text=${mensajeCodificado}`;
 
             // Abrir enlace en una pestaña nueva o en el WebViewer
             window.open(urlWhatsApp, '_blank');
